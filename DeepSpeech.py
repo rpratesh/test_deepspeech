@@ -724,9 +724,9 @@ def train(server=None):
     coord.stop()
 
 
-def test(ckpt_file):
+def test(ckpt_file,test_data):
     # Reading test set
-    test_data = preprocess(FLAGS.test_files.split(','),
+    test_data = preprocess(test_data.split(','),
                            FLAGS.test_batch_size,
                            Config.n_input,
                            Config.n_context,

@@ -975,12 +975,22 @@ def main(_):
 	    #    export()
             # Now do a final test epoch
             if FLAGS.test:
+                print("$$$$$$$$$ Testing on entire test dataset $$$$$$$$$$")
                 ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(dir_path, f)) and '.meta' in f]
                 for ckpt_file in ckpt_files:
-                    print("*************** Testing on ckpt file: "+ckpt_file+"   ***************")
+                    print("************* Testing on ckpt file: "+ckpt_file+"   ***************")
                     with tf.Graph().as_default():
                         test(ckpt_file,FLAGS.test_data)
                     log_debug('Done.')
+                for test_file in FLAGS.test_data.split(","):
+                    print("$$$$$$$$$ Testing on "+test_file+" dataset $$$$$$$$$$")
+                    ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(dir_path, f)) and '.meta' in f]
+                    for ckpt_file in ckpt_files:
+                        print("************* Testing on ckpt file: "+ckpt_file+"   ***************")
+                        with tf.Graph().as_default():
+                            test(ckpt_file,test_file)
+                        log_debug('Done.')
+
         else:
             # Create and start a server for the local task.
             server = tf.train.Server(Config.cluster, job_name=FLAGS.job_name, task_index=FLAGS.task_index)

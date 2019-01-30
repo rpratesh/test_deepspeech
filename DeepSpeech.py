@@ -969,26 +969,26 @@ def main(_):
     if FLAGS.train or FLAGS.test:
         if len(FLAGS.worker_hosts) == 0:
             # Only one local task: this process (default case - no cluster)
-            with tf.Graph().as_default():
-                train()
+            #with tf.Graph().as_default():
+                #train()
 	    #if Config.is_chief:
 	    #    export()
             # Now do a final test epoch
             if FLAGS.test:
                 print("$$$$$$$$$ Testing on entire test dataset $$$$$$$$$$")
-                ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(dir_path, f)) and '.meta' in f]
+                ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(FLAGS.checkpoint_dir, f)) and '.meta' in f]
                 for ckpt_file in ckpt_files:
                     print("************* Testing on ckpt file: "+ckpt_file+"   ***************")
                     with tf.Graph().as_default():
-                        test(ckpt_file,FLAGS.test_data)
+                        test(ckpt_file.replace(".meta",""),FLAGS.test_files)
                     log_debug('Done.')
-                for test_file in FLAGS.test_data.split(","):
+                for test_file in FLAGS.test_files.split(","):
                     print("$$$$$$$$$ Testing on "+test_file+" dataset $$$$$$$$$$")
-                    ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(dir_path, f)) and '.meta' in f]
+                    ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(FLAGS.checkpoint_dir, f)) and '.meta' in f]
                     for ckpt_file in ckpt_files:
                         print("************* Testing on ckpt file: "+ckpt_file+"   ***************")
                         with tf.Graph().as_default():
-                            test(ckpt_file,test_file)
+                            test(ckpt_file.replace(".meta",""),test_file)
                         log_debug('Done.')
 
         else:

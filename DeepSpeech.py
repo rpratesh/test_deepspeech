@@ -976,7 +976,7 @@ def main(_):
             # Now do a final test epoch
             if FLAGS.test:
                 print("$$$$$$$$$ Testing on entire test dataset $$$$$$$$$$")
-                ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(FLAGS.checkpoint_dir, f)) and '.meta' in f]
+                ckpt_files = [f for f in sorted(os.listdir(FLAGS.checkpoint_dir)) if os.path.isfile(os.path.join(FLAGS.checkpoint_dir, f)) and '.meta' in f]
                 for ckpt_file in ckpt_files:
                     print("************* Testing on ckpt file: "+ckpt_file+"   ***************")
                     with tf.Graph().as_default():
@@ -984,7 +984,7 @@ def main(_):
                     log_debug('Done.')
                 for test_file in FLAGS.test_files.split(","):
                     print("$$$$$$$$$ Testing on "+test_file+" dataset $$$$$$$$$$")
-                    ckpt_files = [f for f in os.listdir(FLAGS.checkpoint_dir) if os.path.isfile(os.path.join(FLAGS.checkpoint_dir, f)) and '.meta' in f]
+                    ckpt_files = [f for f in sorted(os.listdir(FLAGS.checkpoint_dir)) if os.path.isfile(os.path.join(FLAGS.checkpoint_dir, f)) and '.meta' in f]
                     for ckpt_file in ckpt_files:
                         print("************* Testing on ckpt file: "+ckpt_file+"   ***************")
                         with tf.Graph().as_default():
